@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق بحوث العمليات التفاعلي - المحاضرة 1</title>
+    <!-- MathJax لترجمة المعادلات الرياضية بشكل أنيق -->
+    <script src="https://polyfill.io"></script>
+    <script id="MathJax-script" async src="https://jsdelivr.net"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 70px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* القائمة السفلية للتنقل من الهاتف */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--surface);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .nav-btn.active {
+            color: var(--primary-light);
+        }
+
+        .nav-btn .icon {
+            font-size: 1.3rem;
+        }
+
+        /* حاوية الأقسام */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* البطاقات والمنسقات */
+        .card {
+            background-color: var(--surface);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f1f5f9;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-right: 4px solid var(--accent);
+            padding-right: 8px;
+        }
+
+        h3 {
+            color: var(--primary-light);
+            font-size: 1.1rem;
+            margin: 15px 0 10px 0;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        ul, ol {
+            padding-right: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* الجداول مخصصة لشاشات الموبايل */
+        .table-container {
+            overflow-x: auto;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #fafafa;
+        }
+
+        .math-block {
+            background-color: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: center;
+        }
+
+        /* نمط قسم الملاحظات الكرتونية المميزة */
+        .note-badge {
+            background-color: #fffbeb;
+            border-right: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* أنماط الكويز */
+        .quiz-card {
+            margin-bottom: 15px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option-btn {
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            text-align: right;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        .option-btn.correct {
+            background-color: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2;
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .feedback-text {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .score-box {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>بحوث العمليات - أولى عملي</h1>
+        <p>تطبيق تفاعلي لصياغة النماذج الرياضية</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ================= قسم الشرح ================= -->
+        <div id="explain" class="tab-content active">
+            <div class="card">
+                <h2>التمييز بين نوعين من النمذجة</h2>
+                <p><strong>1. النمذجة الرياضية:</strong> يتم وصف المشكلة المدروسة عبر مجموعة من المعادلات الرياضية التي تربط المعطيات بالمقادير المجهولة المطلوب حسابها تحليلياً.</p>
+                <p><strong>2. النمذجة التمثيلية:</strong> عندما يتعذر وصف المشكلة رياضياً، نلجأ إلى المحاكاة لتمثيل الواقع.</p>
+            </div>
+
+            <div class="card">
+                <h2>متطلبات إيجاد النموذج الرياضي</h2>
+                <ol>
+                    <li><strong>المعطيات:</strong> مجمل ما نفهمه من المشكلة (مثل: الأرباح، التكاليف، توافر الآلات).</li>
+                    <li><strong>على ماذا سيبنى القرار؟</strong> تحديد المقادير المجهولة المراد حسابها.</li>
+                    <li><strong>العوائق والقيود:</strong> ما يتدخل مانعاً أو معيّقاً في الحلول (محدودية المواد، الساعات المتاحة).</li>
+                    <li><strong>معيار المقارنة:</strong> أساس اختيار الحل الأمثل (كالعائد الربحي الفضلي).</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h2>أمثلة عملية صياغة النماذج</h2>
+                
+                <h3>المثال 1: تعظيم الأرباح للورشات الثلاث</h3>
+                <p>شركة تنتج 3 أصناف \(A, B, C\). المتغيرات المراد حسابها هي:</p>
+                <ul>
+                    <li>\(x_1\): الكمية المنتجة من الصنف A</li>
+                    <li>\(x_2\): الكمية المنتجة من الصنف B</li>
+                    <li>\(x_3\): الكمية المنتجة من الصنف C</li>
+                </ul>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>الورشة</th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>الطاقة القصوى</th>
+                        </tr>
+                        <tr><td>الورشة 1</td><td>3</td><td>4</td><td>3</td><td>36 ساعة</td></tr>
+                        <tr><td>الورشة 2</td><td>2</td><td>3</td><td>3</td><td>28 ساعة</td></tr>
+                        <tr><td>الورشة 3</td><td>1</td><td>2</td><td>3</td><td>18 ساعة</td></tr>
+                        <tr style="font-weight: bold; color: var(--primary);"><td>الربح</td><td>50</td><td>60</td><td>62</td><td>-</td></tr>
+                    </table>
+                </div>
+                <p>الصيغة الرياضية للنموذج:</p>
+                <div class="math-block">
+                    \[Max: Z = 50x_1 + 60x_2 + 62x_3\]
+                    \[Subject \ to:\]
+                    \[3x_1 + 4x_2 + 3x_3 \leq 36\]
+                    \[2x_1 + 3x_2 + 3x_3 \leq 28\]
+                    \[x_1 + 2x_2 + 3x_3 \leq 18\]
+                    \[x_1, x_2, x_3 \geq 0\]
+                </div>
+
+                <h3>المثال 2: تقليل تكلفة غذاء الحيوانات (Min)</h3>
+                <p>المطلوب تلبية الاحتياجات (70 بروتين، 100 كربوهيدرات، 20 دهون) بأقل تكلفة عبر 6 أنواع أغذية \(x_1 \dots x_6\).</p>
+                <div class="math-block">
+                    \[Min: Z = 2x_1 + 3x_2 + 5x_3 + 6x_4 + 8x_5 + 8x_6\]
+                    \[Subject \ to:\]
